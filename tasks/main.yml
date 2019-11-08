@@ -1,0 +1,28 @@
+---
+# tasks file for dnsforwarder
+- name: Update Repositories
+  become: yes
+  apt:
+    update_cache: yes
+
+- name: Install Prerequisites
+  become: yes
+  apt:
+    name: "{{ packages }}"
+  vars:
+    packages:
+      - bind9
+      - bind9utils
+      - bind9-doc
+
+- name: Upload DNS forwarding configuration file
+  become: yes
+  copy:
+    src: named.conf.options
+    dest: /etc/bind9/named.conf.options
+
+- name: Restart bind9 service
+  become: yes
+  systemd:
+    state: restarted
+    name: bind9
