@@ -19,7 +19,7 @@
   become: yes
   copy:
     src: named.conf.options
-    dest: /etc/bind9/named.conf.options
+    dest: /etc/bind/named.conf.options
 
 - name: Restart bind9 service
   become: yes
