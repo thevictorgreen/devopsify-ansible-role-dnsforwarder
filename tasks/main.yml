@@ -15,14 +15,35 @@
       - bind9utils
       - bind9-doc
 
+- name: Create Bind automation directory
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - '/root/.bind_automate'
+
 - name: Upload DNS forwarding configuration file
   become: yes
   copy:
     src: named.conf.options
-    dest: /etc/bind/named.conf.options
+    dest: /root/.bind_automate/named.conf.options
 
-- name: Restart bind9 service
+- name: Upload bind9 initialization script
   become: yes
-  systemd:
-    state: restarted
-    name: bind9
+  copy:
+    src: bind_init.sh
+    dest: /root/.bind_automate/bind_init.sh
+
+- name: Change permissions on bind_init.sh
+  become: yes
+  file:
+    path: /root/.bind_automate/bind_init.sh
+    mode: "u+rwx"
+  ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Run Bind Initialization script
+  become: yes
+  command: /root/.bind_automate/bind_init.sh
+  args:
+    executable: /bin/bash
