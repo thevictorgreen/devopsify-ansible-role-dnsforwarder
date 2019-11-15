@@ -8,7 +8,7 @@ exec 1>/root/.bind_automate/log.out 2>&1
 if [[ ! -f "/root/.bind_automate/init.cfg" ]]
 then
   # COPY CONFIG FILE
-  cp named.conf.options /etc/bind/
+  cp /root/.bind_automate/named.conf.options /etc/bind/
   # RESTART bind9
   systemctl restart bind9
   # CHECK BIND STATUS
