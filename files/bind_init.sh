@@ -13,6 +13,5 @@ then
   systemctl restart bind9
   # CHECK BIND STATUS
   systemctl status bind9
-  sleep 60
   touch /root/.bind_automate/init.cfg
 fi
